@@ -17,15 +17,15 @@ allprojects {
 then, in your app `build.gradle`
 ```groovy
 dependencies {
-    implementation 'com.github.CraZyLegenD.Regalia:latest-version'
+    implementation 'com.github.FunkyMuse.Regalia:latest-version'
     //for gson support
-    implementation 'com.github.CraZyLegenD.Regalia:regalia-gson:latest-version'
+    implementation 'com.github.FunkyMuse.Regalia:regalia-gson:latest-version'
     //for LoganSquare support
-    implementation 'com.github.CraZyLegenD.Regalia:regalia-logansquare:latest-version'
+    implementation 'com.github.FunkyMuse.Regalia:regalia-logansquare:latest-version'
     //for Moshi support
-    implementation 'com.github.CraZyLegenD.Regalia:regalia-moshi:latest-version'
+    implementation 'com.github.FunkyMuse.Regalia:regalia-moshi:latest-version'
     //for Parceler support
-    implementation 'com.github.CraZyLegenD.Regalia:regalia-parceler:latest-version'
+    implementation 'com.github.FunkyMuse.Regalia:regalia-parceler:latest-version'
 }
 ```
 
@@ -40,7 +40,7 @@ Other usage is defined in the individual modules README's
 - [regalia-parceler](regalia-parceler/)
 
 ## Support
-Regalia supports Realm's latest version 7.0.0
+Regalia supports Realm's latest version 10.1.1
 
 Based on [Regalia Java](https://github.com/Commit451/Regalia)
 
