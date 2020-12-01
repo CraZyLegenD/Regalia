@@ -1,8 +1,7 @@
 # Regalia
 [Realm Java](https://realm.io/docs/java/latest/) extensions and helpers for working with Realm using Kotlin.
 
-[![](https://jitpack.io/v/CraZyLegenD/Regalia.svg)](https://jitpack.io/#CraZyLegenD/Regalia)
-
+[![](https://jitpack.io/v/FunkyMuse/Regalia.svg)](https://jitpack.io/#FunkyMuse/Regalia)
 
 ## Gradle Dependency
 Add the jitpack url to the project:
