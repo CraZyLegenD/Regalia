@@ -2,20 +2,18 @@ package com.commit451.regalia.sample
 
 import android.os.Bundle
 import androidx.appcompat.app.AppCompatActivity
-import androidx.lifecycle.Observer
 import com.commit451.regalia.sample.adapter.TestAdapter
+import com.commit451.regalia.sample.databinding.ActivityMainBinding
 import com.crazylegend.kotlinextensions.activity.launchActivity
-import com.crazylegend.kotlinextensions.context.getCompatColor
 import com.crazylegend.kotlinextensions.delegates.activityVM
 import com.crazylegend.kotlinextensions.exhaustive
 import com.crazylegend.kotlinextensions.log.debug
-import com.crazylegend.kotlinextensions.recyclerview.RecyclerSwipeItemHandler
-import com.crazylegend.kotlinextensions.recyclerview.addSwipe
-import com.crazylegend.kotlinextensions.recyclerview.clickListeners.forItemClickListenerDSL
-import com.crazylegend.kotlinextensions.recyclerview.initRecyclerViewAdapter
-import com.crazylegend.kotlinextensions.retrofit.RetrofitResult
-import com.crazylegend.kotlinextensions.views.AppRater
-import kotlinx.android.synthetic.main.activity_main.*
+import com.crazylegend.recyclerview.RecyclerSwipeItemHandler
+import com.crazylegend.recyclerview.addSwipe
+import com.crazylegend.recyclerview.clickListeners.forItemClickListener
+import com.crazylegend.recyclerview.initRecyclerViewAdapter
+import com.crazylegend.retrofit.retrofitResult.RetrofitResult
+import com.crazylegend.viewbinding.viewBinder
 
 
 class MainActivity : AppCompatActivity(R.layout.activity_main) {
@@ -24,20 +22,18 @@ class MainActivity : AppCompatActivity(R.layout.activity_main) {
     private val adapter by lazy {
         TestAdapter()
     }
+    private val binding by viewBinder(ActivityMainBinding::inflate)
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
+        setContentView(binding.root)
 
-        AppRater.appLaunched(this, supportFragmentManager, 0, 0) {
-            appTitle = getString(R.string.app_name)
-            buttonsBGColor = getCompatColor(R.color.colorAccent)
-        }
 
-        recycler.initRecyclerViewAdapter(adapter)
+        binding.recycler.initRecyclerViewAdapter(adapter)
 
 
 
-        recycler.addSwipe(this) {
+        binding.recycler.addSwipe(this) {
             swipeDirection = RecyclerSwipeItemHandler.SwipeDirs.BOTH
             drawableLeft = android.R.drawable.ic_delete
             drawLeftBackground = true
@@ -46,16 +42,16 @@ class MainActivity : AppCompatActivity(R.layout.activity_main) {
         }
 
 
-        testAVM.posts.observe(this, Observer {
+        testAVM.posts.observe(this, {
             it?.apply {
                 when (it) {
                     is RetrofitResult.Success -> {
-                        adapter.submitList(it.value.data)
+                        adapter.submitList(it.value)
 
-                        adapter.forItemClickListener = forItemClickListenerDSL { position, item, _ ->
+                        adapter.forItemClickListener = forItemClickListener { _, item, _ ->
                             launchActivity<TestParcelActivity> {
                                 putExtra("test", item)
-                                putParcelableArrayListExtra("test2", ArrayList(it.value.data))
+                                putParcelableArrayListExtra("test2", ArrayList(it.value))
                             }
                         }
 
@@ -75,6 +71,7 @@ class MainActivity : AppCompatActivity(R.layout.activity_main) {
                     is RetrofitResult.ApiError -> {
                         debug(it.toString())
                     }
+
                 }.exhaustive
             }
         })

@@ -4,13 +4,14 @@ import android.app.Application
 import androidx.lifecycle.AndroidViewModel
 import androidx.lifecycle.LiveData
 import androidx.lifecycle.MediatorLiveData
-import com.commit451.regalia.gson.realmGsonConverterFactory
-import com.commit451.regalia.moshi.RegaliaMoshi
+import com.commit451.regalia.moshi.RealmListJsonAdapterFactory
 import com.commit451.regalia.sample.adapter.TestModel
-import com.commit451.regalia.sample.adapter.TestModel2
-import com.crazylegend.kotlinextensions.coroutines.makeApiCallLiveData
-import com.crazylegend.kotlinextensions.retrofit.RetrofitClient
-import com.crazylegend.kotlinextensions.retrofit.RetrofitResult
+import com.crazylegend.retrofit.RetrofitClient
+import com.crazylegend.retrofit.coroutines.makeApiCallLiveData
+import com.crazylegend.retrofit.retrofitResult.RetrofitResult
+import com.squareup.moshi.Moshi
+import com.squareup.moshi.kotlin.reflect.KotlinJsonAdapterFactory
+import retrofit2.converter.moshi.MoshiConverterFactory
 import retrofit2.create
 
 
@@ -24,32 +25,31 @@ import retrofit2.create
 
 class TestAVM(application: Application) : AndroidViewModel(application) {
 
-    private val postsData: MediatorLiveData<RetrofitResult<TestModel2>> = MediatorLiveData()
-    val posts: LiveData<RetrofitResult<TestModel2>> = postsData
+    private val postsData: MediatorLiveData<RetrofitResult<List<TestModel>>> = MediatorLiveData()
+    val posts: LiveData<RetrofitResult<List<TestModel>>> = postsData
 
 
     fun getposts() {
-        makeApiCallLiveData(postsData) { retrofit2?.getPosts2() }
+        makeApiCallLiveData(postsData) { retrofit.getPosts() }
     }
 
     init {
         getposts()
     }
 
-
-    private val retrofit2 by lazy {
-        RetrofitClient.customInstance(context = application, baseUrl = TestApi.API2, enableInterceptor = true){
-            addConverterFactory(RegaliaMoshi.moshiConverterFactory)
-            this
-        }?.create<TestApi>()
+    private val moshiConverterFactory by lazy {
+        val moshi = Moshi.Builder()
+                .add(KotlinJsonAdapterFactory())
+                .add(RealmListJsonAdapterFactory())
+                .build()
+        MoshiConverterFactory.create(moshi)
     }
 
-
     private val retrofit by lazy {
-        RetrofitClient.customInstance(context = application, baseUrl = TestApi.API2, enableInterceptor = true){
-            addConverterFactory(realmGsonConverterFactory(TestModel::class.java))
+        RetrofitClient.customInstance(context = application, baseUrl = TestApi.API, enableDebuggingInterceptor = true){
+            addConverterFactory(moshiConverterFactory)
             this
-        }?.create<TestApi>()
+        }.create<TestApi>()
     }
 
 

@@ -1,7 +1,7 @@
 package com.commit451.regalia.sample.adapter
 
-import com.commit451.regalia.sample.R
-import com.crazylegend.kotlinextensions.abstracts.AbstractListAdapter2
+import com.commit451.regalia.sample.databinding.RecyclerViewItemBinding
+import com.crazylegend.recyclerview.AbstractViewBindingAdapter
 
 
 /**
@@ -14,18 +14,11 @@ import com.crazylegend.kotlinextensions.abstracts.AbstractListAdapter2
  * Template created by Hristijan to live long and prosper.
  */
 
-class TestAdapter : AbstractListAdapter2<Data, TestViewHolder>(
-        TestViewHolder::class.java,
-        areContentsTheSameCallback = {old, new -> old.id == new.id },
-        areItemsTheSameCallback = {old, new ->old.id == new.id }) {
+class TestAdapter : AbstractViewBindingAdapter<TestModel, TestViewHolder, RecyclerViewItemBinding>(::TestViewHolder, RecyclerViewItemBinding::inflate) {
 
-    override val getLayout: Int
-        get() = R.layout.recycler_view_item
-
-    override fun bindItems(item: Data, holder: TestViewHolder, position: Int) {
+    override fun bindItems(item: TestModel, holder: TestViewHolder, position: Int, itemCount: Int) {
         holder.bind(item)
     }
-
 }
 
 

@@ -3,7 +3,7 @@ package com.commit451.regalia.sample.adapter
 
 import android.os.Parcelable
 import io.realm.RealmObject
-import kotlinx.android.parcel.Parcelize
+import kotlinx.parcelize.Parcelize
 
 @Parcelize
 open class TestModel(

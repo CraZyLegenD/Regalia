@@ -1,4 +1,4 @@
-<com.crazylegend.kotlinextensions.customviews.CustomizableCardView android:layout_width="match_parent"
+<com.crazylegend.customviews.CustomizableCardView android:layout_width="match_parent"
     android:layout_height="wrap_content"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     android:id="@+id/testCard"
